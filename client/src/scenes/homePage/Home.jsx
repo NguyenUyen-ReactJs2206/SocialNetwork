@@ -1,5 +1,11 @@
+import { Box } from "@mui/material";
 import React from "react";
+import Navbar from "scenes/navbar/Navbar";
 
 export default function Home() {
-  return <div>Home</div>;
+  return (
+    <Box>
+      <Navbar />
+    </Box>
+  );
 }

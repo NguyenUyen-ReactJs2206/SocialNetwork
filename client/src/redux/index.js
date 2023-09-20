@@ -18,7 +18,7 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
-    setLogout: (state, action) => {
+    setLogout: (state) => {
       state.user = null;
       state.token = null;
     },
@@ -33,18 +33,18 @@ export const authSlice = createSlice({
       state.posts = action.payload.posts;
     },
     setPost: (state, action) => {
-      const updatePotst = state.posts.map((post) => {
+      const updatePosts = state.posts.map((post) => {
         if (post._id === action.payload.post_id) {
           return action.payload.post;
         }
         return post;
       });
-      state.posts = updatePotst;
+      state.posts = updatePosts;
     },
   },
 });
 
 export const { setFriends, setLogin, setLogout, setMode, setPost, setPosts } =
   authSlice.actions;
-
-export default authSlice.reducers;
+const authReducer = authSlice.reducer;
+export default authReducer;
