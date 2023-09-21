@@ -1,5 +1,6 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
+import Form from "./Form";
 
 export default function Login() {
   const theme = useTheme();
@@ -22,6 +23,7 @@ export default function Login() {
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
           Welcome to Socipedia, the Social Media for Sociopaths!
         </Typography>
+        <Form />
       </Box>
     </Box>
   );
