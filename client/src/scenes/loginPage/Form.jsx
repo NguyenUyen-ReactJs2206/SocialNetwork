@@ -52,8 +52,43 @@ export default function Form() {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
+  const login = async (values, onSubmitProps) => {};
+  const register = async (values, onSubmitProps) => {
+    //This allows us to send form info with image
+    console.log(values, "vvvvvvvvvvvvvvv222222");
+    const formData = new FormData();
+    console.log(formData, "FormmmmmmDaaaaaaa");
 
-  const handleFormSubmit = async (value, onSubmitProps) => {};
+    // tạo một clone của array 'values' thông qua FormData Object
+    // với value là tên từng thuộc tính trong values
+    // và values[value] là giá trị của từng thuộc tính trong values
+    for (let value in values) {
+      formData[value] = values[value];
+    }
+
+    formData["picturePath"] = `${values.picture.name}`;
+    console.log(formData, "f22222222");
+
+    const savedUserResponse = await fetch(
+      "http://localhost:3001/auth/register",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const savedUser = await savedUserResponse.json();
+    onSubmitProps.resetForm();
+
+    if (savedUser) {
+      setPageType("login");
+    }
+  };
+
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    console.log(values, "vvvvvvvvvvv1111111111111");
+    if (isLogin) await login(values, onSubmitProps);
+    if (isRegister) await register(values, onSubmitProps);
+  };
 
   return (
     <Formik
@@ -150,7 +185,7 @@ export default function Form() {
                         p="1rem"
                         sx={{ "&:hover": { cursor: "pointer" } }}
                       >
-                        <input {...getInputProps} />
+                        <input {...getInputProps()} />
                         {!values.picture ? (
                           <p>Add Picture Here</p>
                         ) : (

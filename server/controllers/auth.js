@@ -31,7 +31,7 @@ export const register = async (req, res) => {
       viewedProfile: Math.floor(Math.random() * 10000),
       impressions: Math.floor(Math.random() * 10000),
     });
-    const saveUser = await newUser.save();
+    const savedUser = await newUser.save();
     res.status(201).json(savedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
