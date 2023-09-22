@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
       min: 2,
       max: 50,
     },
-    lastName: {
+    email: {
       type: String,
       required: true,
       max: 50,
@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
-    picture: {
+    picturePath: {
       type: String,
       default: "",
     },

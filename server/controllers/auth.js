@@ -15,9 +15,17 @@ export const register = async (req, res) => {
       location,
       occupation,
     } = req.body;
-
+    console.log(req.body);
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
+
+    // const saltRounds = 10;
+    // const passwordHash = bcrypt.genSalt(saltRounds, (err, salt) => {
+    //   bcrypt.hash(password, salt);
+    //   if (!err) {
+    //     console.log("success salt", salt);
+    //   }
+    // });
 
     const newUser = new User({
       firstName,
@@ -32,6 +40,7 @@ export const register = async (req, res) => {
       impressions: Math.floor(Math.random() * 10000),
     });
     const savedUser = await newUser.save();
+    console.log(savedUser, "sssssssssss");
     res.status(201).json(savedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,19 +1,20 @@
+import { useState } from "react";
 import {
   Box,
   Button,
   TextField,
-  Typography,
   useMediaQuery,
+  Typography,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../../redux";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import { EditOutlined } from "@mui/icons-material";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -44,31 +45,31 @@ const initialValuesLogin = {
   email: "",
   password: "",
 };
-export default function Form() {
+
+const Form = () => {
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
-  const login = async (values, onSubmitProps) => {};
+
   const register = async (values, onSubmitProps) => {
-    //This allows us to send form info with image
-    console.log(values, "vvvvvvvvvvvvvvv222222");
+    // this allows us to send form info with image
     const formData = new FormData();
-    console.log(formData, "FormmmmmmDaaaaaaa");
-
-    // tạo một clone của array 'values' thông qua FormData Object
-    // với value là tên từng thuộc tính trong values
-    // và values[value] là giá trị của từng thuộc tính trong values
     for (let value in values) {
-      formData[value] = values[value];
+      formData.append(value, values[value]);
     }
+    formData.append("picturePath", values.picture.name);
 
-    formData["picturePath"] = `${values.picture.name}`;
-    console.log(formData, "f22222222");
+    //Cach khac
+    // for (let value in values) {
+    //   formData[value] = values[value];
+    // }
+    // formData["picturePath"] = values.picture.name;
 
+    console.log(formData, "form");
     const savedUserResponse = await fetch(
       "http://localhost:3001/auth/register",
       {
@@ -84,8 +85,26 @@ export default function Form() {
     }
   };
 
+  const login = async (values, onSubmitProps) => {
+    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    const loggedIn = await loggedInResponse.json();
+    onSubmitProps.resetForm();
+    if (loggedIn) {
+      dispatch(
+        setLogin({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
+      );
+      navigate("/home");
+    }
+  };
+
   const handleFormSubmit = async (values, onSubmitProps) => {
-    console.log(values, "vvvvvvvvvvv1111111111111");
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
   };
@@ -129,7 +148,6 @@ export default function Form() {
                   helperText={touched.firstName && errors.firstName}
                   sx={{ gridColumn: "span 2" }}
                 />
-
                 <TextField
                   label="Last Name"
                   onBlur={handleBlur}
@@ -140,7 +158,6 @@ export default function Form() {
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
                 />
-
                 <TextField
                   label="Location"
                   onBlur={handleBlur}
@@ -151,7 +168,6 @@ export default function Form() {
                   helperText={touched.location && errors.location}
                   sx={{ gridColumn: "span 4" }}
                 />
-
                 <TextField
                   label="Occupation"
                   onBlur={handleBlur}
@@ -164,7 +180,6 @@ export default function Form() {
                   helperText={touched.occupation && errors.occupation}
                   sx={{ gridColumn: "span 4" }}
                 />
-
                 <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
@@ -172,10 +187,10 @@ export default function Form() {
                   p="1rem"
                 >
                   <Dropzone
-                    acceptedFile=".jpg,.jpeg,.png"
+                    acceptedFiles=".jpg,.jpeg,.png"
                     multiple={false}
-                    onDrop={(acceptedFile) =>
-                      setFieldValue("picture", acceptedFile[0])
+                    onDrop={(acceptedFiles) =>
+                      setFieldValue("picture", acceptedFiles[0])
                     }
                   >
                     {({ getRootProps, getInputProps }) => (
@@ -191,7 +206,7 @@ export default function Form() {
                         ) : (
                           <FlexBetween>
                             <Typography>{values.picture.name}</Typography>
-                            <EditOutlined />
+                            <EditOutlinedIcon />
                           </FlexBetween>
                         )}
                       </Box>
@@ -211,9 +226,9 @@ export default function Form() {
               helperText={touched.email && errors.email}
               sx={{ gridColumn: "span 4" }}
             />
-
             <TextField
               label="Password"
+              type="password"
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.password}
@@ -247,16 +262,14 @@ export default function Form() {
               sx={{
                 textDecoration: "underline",
                 color: palette.primary.main,
-                transitionDuration: ".5s",
                 "&:hover": {
                   cursor: "pointer",
                   color: palette.primary.light,
-                  transition: "all .3s",
                 },
               }}
             >
               {isLogin
-                ? "Don't have an account ? Sign Up here."
+                ? "Don't have an account? Sign Up here."
                 : "Already have an account? Login here."}
             </Typography>
           </Box>
@@ -264,4 +277,6 @@ export default function Form() {
       )}
     </Formik>
   );
-}
+};
+
+export default Form;
