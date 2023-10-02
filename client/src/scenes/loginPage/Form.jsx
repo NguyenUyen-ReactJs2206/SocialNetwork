@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../../redux";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { EditOutlined } from "@mui/icons-material";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -80,7 +81,7 @@ const Form = () => {
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
 
-    if (savedUser) {
+    if (savedUser && formData) {
       setPageType("login");
     }
   };
@@ -93,6 +94,8 @@ const Form = () => {
     });
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
+
+    console.log(loggedIn, "lllllllllll");
     if (loggedIn) {
       dispatch(
         setLogin({
@@ -187,10 +190,10 @@ const Form = () => {
                   p="1rem"
                 >
                   <Dropzone
-                    acceptedFiles=".jpg,.jpeg,.png"
+                    acceptedFile=".jpg,.jpeg,.png"
                     multiple={false}
-                    onDrop={(acceptedFiles) =>
-                      setFieldValue("picture", acceptedFiles[0])
+                    onDrop={(acceptedFile) =>
+                      setFieldValue("picture", acceptedFile[0])
                     }
                   >
                     {({ getRootProps, getInputProps }) => (
@@ -206,7 +209,7 @@ const Form = () => {
                         ) : (
                           <FlexBetween>
                             <Typography>{values.picture.name}</Typography>
-                            <EditOutlinedIcon />
+                            <EditOutlined />
                           </FlexBetween>
                         )}
                       </Box>
@@ -215,7 +218,6 @@ const Form = () => {
                 </Box>
               </>
             )}
-
             <TextField
               label="Email"
               onBlur={handleBlur}
@@ -228,7 +230,6 @@ const Form = () => {
             />
             <TextField
               label="Password"
-              type="password"
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.password}
@@ -238,7 +239,6 @@ const Form = () => {
               sx={{ gridColumn: "span 4" }}
             />
           </Box>
-
           {/* BUTTONS */}
           <Box>
             <Button
@@ -262,14 +262,16 @@ const Form = () => {
               sx={{
                 textDecoration: "underline",
                 color: palette.primary.main,
+                transitionDuration: ".5s",
                 "&:hover": {
                   cursor: "pointer",
                   color: palette.primary.light,
+                  transition: "all .3s",
                 },
               }}
             >
               {isLogin
-                ? "Don't have an account? Sign Up here."
+                ? "Don't have an account ? Sign Up here."
                 : "Already have an account? Login here."}
             </Typography>
           </Box>
