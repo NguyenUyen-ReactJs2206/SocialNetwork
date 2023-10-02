@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "scenes/loginPage/Login";
 import Home from "scenes/homePage/Home";
 import Profile from "scenes/profilePage/Profile";
@@ -12,14 +12,21 @@ function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
+  const isAuth = Boolean(useSelector((state) => state.token));
   return (
     <div className="app">
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Routes>
           <Route path="/" element={<Login />}></Route>
-          <Route path="/home" element={<Home />}></Route>
-          <Route path="/profile/:userId" element={<Profile />}></Route>
+          <Route
+            path="/home"
+            element={isAuth ? <Home /> : <Navigate to="/" />}
+          ></Route>
+          <Route
+            path="/profile/:userId"
+            element={isAuth ? <Profile /> : <Navigate to="/" />}
+          ></Route>
         </Routes>
       </ThemeProvider>
     </div>

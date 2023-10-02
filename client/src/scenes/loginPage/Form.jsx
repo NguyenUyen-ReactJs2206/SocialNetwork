@@ -233,6 +233,7 @@ const Form = () => {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.password}
+              type="password"
               name="password"
               error={Boolean(touched.password) && Boolean(errors.password)}
               helperText={touched.password && errors.password}
