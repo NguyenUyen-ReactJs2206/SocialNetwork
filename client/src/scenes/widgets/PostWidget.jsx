@@ -11,7 +11,7 @@ import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "redux";
+import { setPost } from "../../redux";
 
 export default function PostWidget({
   postId,
