@@ -24,7 +24,10 @@ export default function Friend({ friendId, name, subtitle, userPicturePath }) {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  //   const isFriend = friends && friends.find((friend) => friend._id === friendId);
+  const isFriend = Array.isArray(friends)
+    ? friends.find((friend) => friend._id === friendId)
+    : null;
 
   const patchFriend = async () => {
     const response = await fetch(
