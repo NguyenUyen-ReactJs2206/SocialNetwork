@@ -49,7 +49,7 @@ export default function MyPostWidget({ picturePath }) {
 
     const response = await fetch("http://localhost:3001/posts", {
       method: "POST",
-      headers: { Authorization: `Bear ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
     const posts = await response.json();
