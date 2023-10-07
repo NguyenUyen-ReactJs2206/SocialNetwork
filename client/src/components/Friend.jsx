@@ -6,10 +6,7 @@ import { setFriends } from "../redux";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import { Box, IconButton, Typography } from "@mui/material";
-import {
-  PersonAddAltOutlined,
-  PersonRemoveOutlined,
-} from "@mui/icons-material";
+import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 
 export default function Friend({ friendId, name, subtitle, userPicturePath }) {
   const dispatch = useDispatch();
@@ -24,7 +21,6 @@ export default function Friend({ friendId, name, subtitle, userPicturePath }) {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  //   const isFriend = friends && friends.find((friend) => friend._id === friendId);
   const isFriend = Array.isArray(friends)
     ? friends.find((friend) => friend._id === friendId)
     : null;
@@ -77,9 +73,9 @@ export default function Friend({ friendId, name, subtitle, userPicturePath }) {
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
         {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryLight }} />
+          <PersonRemoveOutlined sx={{ color: primaryDark }} />
         ) : (
-          <PersonAddAltOutlined sx={{ color: primaryDark }} />
+          <PersonAddOutlined sx={{ color: primaryDark }} />
         )}
       </IconButton>
     </FlexBetween>
