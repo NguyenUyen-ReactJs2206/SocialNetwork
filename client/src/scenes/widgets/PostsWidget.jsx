@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../../redux";
+import { setPosts } from "../../redux";
 import PostWidget from "./PostWidget";
 
 export default function PostsWidget({ userId, isProfile = false }) {
@@ -10,13 +10,12 @@ export default function PostsWidget({ userId, isProfile = false }) {
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
-    const response = await fetch(`http://localhost:3001/posts`, {
+    const response = await fetch("http://localhost:3001/posts", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
-    console.log(data, "ddddddddddd11111111");
-    dispatch(setPost({ posts: data }));
+    dispatch(setPosts({ posts: data }));
   };
 
   const getUserPosts = async () => {
@@ -28,8 +27,7 @@ export default function PostsWidget({ userId, isProfile = false }) {
       }
     );
     const data = await response.json();
-    console.log(data, "ddddddddddd2222222");
-    dispatch(setPost({ posts: data }));
+    dispatch(setPosts({ posts: data }));
   };
 
   useEffect(() => {
@@ -38,7 +36,7 @@ export default function PostsWidget({ userId, isProfile = false }) {
     } else {
       getPosts();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
