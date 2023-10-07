@@ -9,6 +9,6 @@ postRoutes.get("/", verifyToken, getFeedPosts);
 postRoutes.get("/:userId/posts", verifyToken, getUserPosts);
 
 //UPDATE
-postRoutes.patch("/:id");
+postRoutes.patch("/:id/like", verifyToken, likePost);
 
 export default postRoutes;
