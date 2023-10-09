@@ -44,8 +44,8 @@ export default function PostWidget({
       },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
-    const updatePost = await response.json();
-    dispatch(setPost({ post: updatePost }));
+    const updatedPost = await response.json();
+    dispatch(setPost({ post: updatedPost }));
   };
   return (
     <WidgetWrapper m="2rem 0">
